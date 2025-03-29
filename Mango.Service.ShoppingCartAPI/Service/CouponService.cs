@@ -24,7 +24,7 @@ namespace Mango.Service.ShoppingCartAPI.Service
 
             }
 
-            return new List<CouponDto>();
+            return new CouponDto();
         }
     }
 }
