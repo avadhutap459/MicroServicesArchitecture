@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Diagnostics;
-using IdentityModel;
 using System.Security.Claims;
 
 namespace Mango.Web.Controllers
@@ -67,15 +66,26 @@ namespace Mango.Web.Controllers
             {
                 CartHeader = new CartHeaderDto
                 {
-                    UserId = User.Claims.Where(u => u.Type == JwtClaimTypes.Subject)?.FirstOrDefault()
+                    UserId = User.Claims.Where(u => u.Type == "sub")?.FirstOrDefault()?.Value
                 }
             };
 
-            ResponseDto? respone = await _productService.GetProductByIdAsync(111);
+            CartDetailsDto cartDetails = new CartDetailsDto()
+            {
+                Count = productDto.Count,
+                ProductId = productDto.ProductId,
+            };
+            List<CartDetailsDto> cartDetailsDtos = new() { cartDetails };
+            cartDto.CartDetails = cartDetailsDtos;
+
+
+
+            ResponseDto? respone = await _cartService.UpsertCartAsync(cartDto);
 
             if (respone != null && respone.IsSucess)
             {
-                ProductDto model = JsonConvert.DeserializeObject<ProductDto>(Convert.ToString(respone.Result));
+                TempData["success"] = "Item has added to the shopping cart";
+                return RedirectToAction(nameof(Index));
             }
             else
             {
