@@ -1,5 +1,5 @@
 ﻿
-namespace Mango.Service.ShoppingCartAPI.Models.Dto
+namespace Mango.Web.Models
 {
     public class CartHeaderDto
     {
@@ -11,6 +11,6 @@ namespace Mango.Service.ShoppingCartAPI.Models.Dto
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
         public string? Email { get; set; }
-        public string? Phone { get; set; }
+        public string? Phone { get; set; }  
     }
 }
