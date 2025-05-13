@@ -1,11 +1,13 @@
-﻿namespace Mango.Service.EmailAPI.Messaging
+﻿using Azure.Messaging.ServiceBus;
+
+namespace Mango.Service.EmailAPI.Messaging
 {
     public class AzureServiceBusConsumer
     {
         private readonly string serviceBusConnectionString;
         private readonly string emailCartQueue;
         private readonly IConfiguration _configuration;
-        //private ServiceBusProcessor
+        private ServiceBusProcessor _emailCartProcessor;
 
         public AzureServiceBusConsumer(IConfiguration configuration)
         {
@@ -14,6 +16,7 @@
             emailCartQueue = _configuration.GetValue<string>("TopicAndQueueNames:EmailShoppingCartQueue");
 
             var client = new ServiceBusClient(serviceBusConnectionString);
+            _emailCartProcessor = client.CreateProcessor(emailCartQueue);
         }
     }
 }
